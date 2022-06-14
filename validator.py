@@ -1,3 +1,4 @@
+import re
 import sys
 import logging
 import argparse
@@ -53,7 +54,7 @@ def extract_tag(schema):
     return comment.text.strip()
 
 def split_url(url: str):
-    return url.split('/')[-1]
+    return re.split('\\\\|/', url)[-1]
 
 def get_subtree_root(schema):
     xsd_file = split_url(schema.docinfo.URL)
