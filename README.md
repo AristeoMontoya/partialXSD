@@ -1,6 +1,8 @@
 # Partial XSD validator
 Yet another _quick_ and dirty python script. A simple python script to validate a fragment of an xml to a schema.
 
+![disclaimer](disclaimer.png)
+
 ## Instalation
 `pip install -r requirements.txt`
 
