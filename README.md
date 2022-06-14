@@ -19,7 +19,7 @@ You'll need to add a comment to the XSD containing the name of the new root, in 
 
 ### Running the script
 Help page:
- ```
+```
 positional arguments:
   target                File or dir to validate
   schema                XSD or directory containing XSD files to apply
