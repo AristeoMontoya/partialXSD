@@ -1,5 +1,4 @@
 import sys
-import re
 import logging
 import argparse
 from os import listdir
