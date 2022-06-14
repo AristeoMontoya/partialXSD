@@ -7,6 +7,7 @@ from lxml import etree
 from glob import glob
 
 root_for_schema = {}
+summary = {}
 
 def set_handler(logger, handler):
     formatter = logging.Formatter('%(message)s')
@@ -62,6 +63,13 @@ def get_subtree_root(schema):
         root_for_schema[xsd_file] = extract_tag(schema)
         return get_subtree_root(schema)
 
+def add_to_summary(xsd: str, occurrences: int):
+    filename = split_url(xsd)
+    if filename in summary:
+        summary[filename] += occurrences
+    else:
+        summary[filename] = occurrences
+
 def test_schema(schema_doc, subdoc):
     schema = etree.XMLSchema(schema_doc)
     try:
@@ -94,6 +102,12 @@ def process_files(xml_files: list, schemas: list):
         logging.info(f'Analyzing {xml}')
         compare_schemas(xml, schemas)
 
+def print_summary():
+    logging.info('---------------------------------------------------------')
+    logging.info('SUMMARY')
+    for file, occurrences in summary.items():
+        print(f'({occurrences}) - {file}')
+
 if __name__ == '__main__':
     args = get_arguments()
     initalize_logger(args.output)
@@ -102,3 +116,4 @@ if __name__ == '__main__':
     logging.info(f'Files to analize: {len(xml_files)}')
     logging.info(f'Schemas to apply: {len(xsd_files)}')
     process_files(xml_files, xsd_files)
+    print_summary()
