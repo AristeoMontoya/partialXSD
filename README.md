@@ -5,6 +5,19 @@ Yet another _quick_ and dirty python script. A simple python script to validate 
 `pip install -r requirements.txt`
 
 ## Usage
+### Preparing the XSD
+By default, the schipt looks for the fisrt comment in the XSD for the element that will be the root for the partial XML, meaning that if you want to validate something like
+```xml
+<another-tag>
+    <document>
+        <some-tag/>
+    </document>
+</another-tag>
+```
+
+You'll need to add a comment to the xsd containing the name of the new root, in this case `document` will be our new root, so we'll add a comment Like this `<!-- document -->`.
+
+### Running the script
 Help page:
  ```
 positional arguments:
