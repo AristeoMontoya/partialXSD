@@ -51,8 +51,11 @@ def extract_tag(schema):
     comment = schema.xpath('.//comment()')[0]
     return comment.text.strip()
 
+def split_url(url: str):
+    return url.split('/')[-1]
+
 def get_subtree_root(schema):
-    xsd_file = schema.docinfo.URL.split('/')[-1]
+    xsd_file = split_url(schema.docinfo.URL)
     if xsd_file in root_for_schema:
         return root_for_schema[xsd_file]
     else:
@@ -74,13 +77,16 @@ def find_tags(document, tag: str):
 def compare_schemas(xml: str, xsd_files: list):
     document = etree.parse(xml)
     for xsd in xsd_files:
+        matches = 0
         schema = etree.parse(xsd)
         to_find = get_subtree_root(schema)
         occurrences = find_tags(document, to_find)
         for occurrence in occurrences:
-            matches = test_schema(schema, occurrence)
-            if matches:
+            if test_schema(schema, occurrence):
                 logging.info(f'Occurrence of {xsd} at line {occurrence.sourceline}')
+                matches += 1
+        if matches > 0:
+            add_to_summary(xsd, matches)
 
 def process_files(xml_files: list, schemas: list):
     for xml in xml_files:
