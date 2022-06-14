@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!--kap-->
+<!-- Attribute definition -->
+<xs:attribute name="ext-id" type="xs:string"/>
+<xs:attribute name="id" type="xs:string"/>
+<xs:attribute name="typ" type="xs:string"/>
+<xs:attribute name="ziel" type="xs:string"/>
+<xs:attribute name="form" type="xs:string"/>
+
+<!-- definition of complex elements -->
+<xs:element name="kap">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="titel"/>
+			<xs:element name="absatz" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="qv-kap">
+							<xs:complexType>
+								<xs:attribute ref="form"/>
+								<xs:attribute ref="ziel"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute ref="typ"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute ref="ext-id"/>
+		<xs:attribute ref="id"/>
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>

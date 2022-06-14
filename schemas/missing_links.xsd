@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!-- achtung -->
+<!-- Attribute definition -->
+<xs:attribute name="reuse" type="xs:string"/>
+<xs:attribute name="stufe" type="xs:string"/>
+
+<!-- definition of complex elements -->
+<xs:element name="achtung">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="absatz">
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element name="ext-kah"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="absatz" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="reuse"/>
+		<xs:attribute ref="stufe"/>
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>
