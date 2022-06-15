@@ -1,11 +1,10 @@
-import re
 import sys
 import logging
 import argparse
 from os import listdir
 from os import path
 from lxml import etree
-from glob import glob
+from pathlib import Path
 
 root_for_schema = {}
 summary = {}
@@ -34,13 +33,13 @@ def get_arguments():
             action='store_true')
     return parser.parse_args()
 
-def search_in_dir(target: str, recurse: bool, ext:str):
-    return [
-        i for i in glob(target + '/**', recursive=recurse) if i.endswith(ext)
-    ]
+def search_in_dir(target: Path, recurse: bool, ext:str):
+    pattern = f'*.{ext}'
+    return target.rglob(pattern) if recurse else target.glob(pattern)
 
-def list_files(target: str, recurse: bool, ext: str):
-    return [target] if path.isfile(target) else search_in_dir(target, recurse, ext)
+def list_files(target_str: str, recurse: bool, ext: str):
+    target = Path(target_str)
+    return [target] if target.is_file() else list(search_in_dir(target, recurse, ext))
 
 def get_schemas(schema_dir: str):
     '''List all XSD files in a given dir'''
@@ -53,19 +52,16 @@ def extract_tag(schema):
     comment = schema.xpath('.//comment()')[0]
     return comment.text.strip()
 
-def split_url(url: str):
-    return re.split('\\\\|/', url)[-1]
-
 def get_subtree_root(schema):
-    xsd_file = split_url(schema.docinfo.URL)
+    xsd_file = Path(schema.docinfo.URL).name
     if xsd_file in root_for_schema:
         return root_for_schema[xsd_file]
     else:
         root_for_schema[xsd_file] = extract_tag(schema)
         return get_subtree_root(schema)
 
-def add_to_summary(xsd: str, occurrences: int):
-    filename = split_url(xsd)
+def add_to_summary(xsd: Path, occurrences: int):
+    filename = xsd.name
     if filename in summary:
         summary[filename] += occurrences
     else:
