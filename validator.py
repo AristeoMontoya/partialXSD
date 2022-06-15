@@ -103,7 +103,7 @@ def print_summary():
     logging.info('---------------------------------------------------------')
     logging.info('SUMMARY')
     for file, occurrences in summary.items():
-        print(f'({occurrences}) - {file}')
+        logging.info(f'({occurrences}) - {file}')
 
 if __name__ == '__main__':
     args = get_arguments()
